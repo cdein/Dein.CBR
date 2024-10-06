@@ -74,9 +74,7 @@ namespace Dein.CBRLib
 
     public class NumericEvaluator<T> : IEvaluator<T> where T : INumber<T>
     {
-        private double _minimum;
-        private double _maximum;
-        private double _maxDistance;
+        private double _maxPossibleDistance;
 
         private NumericEvaluatorOptions<T> _options;
 
@@ -85,17 +83,7 @@ namespace Dein.CBRLib
 
         public NumericEvaluator(T minimum, T maximum, NumericEvaluatorOptions<T> options)
         {
-            if (minimum < maximum)
-            {
-                _minimum = Convert.ToDouble(minimum);
-                _maximum = Convert.ToDouble(maximum);
-            }
-            else
-            {
-                _minimum = Convert.ToDouble(maximum);
-                _maximum = Convert.ToDouble(minimum);
-            }
-            _maxDistance = Math.Abs(_maximum - _minimum);
+            _maxPossibleDistance = Math.Abs(maximum - minimum);
             _options = options;
         }
 
@@ -104,16 +92,16 @@ namespace Dein.CBRLib
             double q = Convert.ToDouble(queryValue);
             double c = Convert.ToDouble(caseValue);
 
-            double maxDistance = CalculateMaxDistance(q, _maxDistance, _options.Origin, _options.UseOrigin);
+            double maxDistance = CalculateMaxDistance(q, _maxPossibleDistance, _options.Origin, _options.UseOrigin);
             if (maxDistance == 0d)
                 return 1d;
 
-            double distance = CalculateDistance(q, c, _maxDistance, _options.Cyclic);
+            double distance = CalculateDistance(q, c, _maxPossibleDistance, _options.Cyclic);
             double relativeDistance = distance / maxDistance;
             if (relativeDistance >= 1d)
                 return 0d;
 
-            bool isLess = IsLess(q, c, _maxDistance, _options.Cyclic);
+            bool isLess = IsLess(q, c, _maxPossibleDistance, _options.Cyclic);
             NumericCalculationParameter calculationParameter = isLess ? _options.IfLess : _options.IfMore;
 
             if (relativeDistance <= calculationParameter.Equality)
