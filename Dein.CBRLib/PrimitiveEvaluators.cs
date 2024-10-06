@@ -83,7 +83,7 @@ namespace Dein.CBRLib
 
         public NumericEvaluator(T minimum, T maximum, NumericEvaluatorOptions<T> options)
         {
-            _maxPossibleDistance = Math.Abs(maximum - minimum);
+            _maxPossibleDistance = Math.Abs(Convert.ToDouble(maximum) - Convert.ToDouble(minimum));
             _options = options;
         }
 
