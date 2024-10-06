@@ -20,7 +20,7 @@ namespace Dein.CBRLib
             return Math.Pow(1d - stretchedDistance, 1d / linearity);
         }
 
-        public static Polynom Instance = new Polynom();
+        public static Polynom Default = new Polynom();
     }
 
     public class Root : IInterpolation
@@ -34,7 +34,7 @@ namespace Dein.CBRLib
             return Math.Pow(1d - stretchedDistance, linearity);
         }
 
-        public static Root Instance = new Root();
+        public static Root Default = new Root();
     }
 
     public class Sigmoid : IInterpolation
@@ -54,20 +54,20 @@ namespace Dein.CBRLib
             return Math.Pow(2d - 2d * stretchedDistance, 1d / linearity) / 2d;
         }
 
-        public static Sigmoid Instance = new Sigmoid();
+        public static Sigmoid Default = new Sigmoid();
     }
 
     public record NumericCalculationParameter(double Equality = 0d, double Tolerance = 0.5d, double Linearity = 1d, IInterpolation _Interpolation = null)
     {
-        public IInterpolation Interpolation { get; } = _Interpolation == null ? Polynom.Instance : _Interpolation;
+        public IInterpolation Interpolation { get; } = _Interpolation == null ? Polynom.Default : _Interpolation;
 
-        public static NumericCalculationParameter Instance = new NumericCalculationParameter();
+        public static NumericCalculationParameter Default = new NumericCalculationParameter();
     }
 
     public record NumericEvaluatorOptions<T>(NumericCalculationParameter _IfLess = null, NumericCalculationParameter _IfMore = null, T _Origin = default, bool UseOrigin = false, bool Cyclic = false) where T : INumber<T>
     {
-        public NumericCalculationParameter IfLess { get; } = _IfLess == null ? NumericCalculationParameter.Instance : _IfLess;
-        public NumericCalculationParameter IfMore { get; } = _IfMore == null ? NumericCalculationParameter.Instance : _IfMore;
+        public NumericCalculationParameter IfLess { get; } = _IfLess == null ? NumericCalculationParameter.Default : _IfLess;
+        public NumericCalculationParameter IfMore { get; } = _IfMore == null ? NumericCalculationParameter.Default : _IfMore;
 
         public double Origin { get; } = Convert.ToDouble(_Origin == null ? 0 : _Origin);
     }

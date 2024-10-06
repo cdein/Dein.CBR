@@ -18,8 +18,8 @@ namespace Dein.CBRLib.Tests
         public void NumericEvaluatorOptions_Defaults()
         {
             var evaluatorOptions1 = new NumericEvaluatorOptions<int>();
-            Assert.Equal(NumericCalculationParameter.Instance, evaluatorOptions1.IfLess);
-            Assert.Equal(NumericCalculationParameter.Instance, evaluatorOptions1.IfMore);
+            Assert.Equal(NumericCalculationParameter.Default, evaluatorOptions1.IfLess);
+            Assert.Equal(NumericCalculationParameter.Default, evaluatorOptions1.IfMore);
             Assert.Equal(0d, evaluatorOptions1.Origin);
             Assert.False(evaluatorOptions1.UseOrigin);
             Assert.False(evaluatorOptions1.Cyclic);
@@ -75,7 +75,7 @@ namespace Dein.CBRLib.Tests
         {
             NumericEvaluator<double> evaluator;
             evaluator = new NumericEvaluator<double>(0d, 10d, new NumericEvaluatorOptions<double>(
-                NumericCalculationParameter.Instance,
+                NumericCalculationParameter.Default,
                 new NumericCalculationParameter(0.1d)
             ));
             for (int i = 0, n = 10; i < n; i++)
