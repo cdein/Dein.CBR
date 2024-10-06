@@ -1,0 +1,6 @@
+# Compiler and linker specifics
+bin
+obj
+
+# Editor
+.vscode
