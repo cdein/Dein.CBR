@@ -94,6 +94,29 @@ namespace Dein.CBRLib.Tests
         }
 
         [Fact]
+        public void NumericEvaluator_Evaluate_Tolerance()
+        {
+            NumericEvaluator<double> evaluator;
+            evaluator = new NumericEvaluator<double>(0d, 10d, new NumericEvaluatorOptions<double>(
+                new NumericCalculationParameter(0, 0.1d)
+            ));
+            Assert.True(evaluator.Evaluate(9.0000000001d, 10d) > 0d);
+            for (int i = 9, n = 0; i <= n; i--)
+            {
+                Assert.Equal(0d, evaluator.Evaluate(10d, (double)i));
+            }
+            evaluator = new NumericEvaluator<double>(0d, 10d, new NumericEvaluatorOptions<double>(
+                NumericCalculationParameter.Default,
+                new NumericCalculationParameter(0, 0.1d)
+            ));
+            Assert.True(evaluator.Evaluate(10d, 9.0000000001d) > 0d);
+            for (int i = 9, n = 0; i <= n; i--)
+            {
+                Assert.Equal(0d, evaluator.Evaluate(9d + (((double)i) / 10d), 10d));
+            }
+        }
+
+        [Fact]
         public void NumericEvaluator_Evaluate()
         {
             var evaluator = new NumericEvaluator<int>((int)0, (int)20);
