@@ -89,19 +89,19 @@ namespace Dein.CBRLib
 
         public double Evaluate(T queryValue, T caseValue)
         {
-            double q = Convert.ToDouble(queryValue);
-            double c = Convert.ToDouble(caseValue);
+            double workingQueryValue = Convert.ToDouble(queryValue);
+            double workingCaseValue = Convert.ToDouble(caseValue);
 
-            double maxDistance = CalculateMaxDistance(q, _maxPossibleDistance, _options.Origin, _options.UseOrigin);
+            double maxDistance = CalculateMaxDistance(workingQueryValue, _maxPossibleDistance, _options.Origin, _options.UseOrigin);
             if (maxDistance == 0d)
                 return 1d;
 
-            double distance = CalculateDistance(q, c, _maxPossibleDistance, _options.Cyclic);
+            double distance = CalculateDistance(workingQueryValue, workingCaseValue, _maxPossibleDistance, _options.Cyclic);
             double relativeDistance = distance / maxDistance;
             if (relativeDistance >= 1d)
                 return 0d;
 
-            bool isLess = IsLess(q, c, _maxPossibleDistance, _options.Cyclic);
+            bool isLess = IsLess(workingCaseValue, workingQueryValue, _maxPossibleDistance, _options.Cyclic);
             NumericCalculationParameter calculationParameter = isLess ? _options.IfLess : _options.IfMore;
 
             if (relativeDistance <= calculationParameter.Equality)

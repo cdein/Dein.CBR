@@ -75,7 +75,6 @@ namespace Dein.CBRLib.Tests
         {
             NumericEvaluator<double> evaluator;
             evaluator = new NumericEvaluator<double>(0d, 10d, new NumericEvaluatorOptions<double>(
-                NumericCalculationParameter.Default,
                 new NumericCalculationParameter(0.1d)
             ));
             for (int i = 0, n = 10; i < n; i++)
@@ -84,6 +83,7 @@ namespace Dein.CBRLib.Tests
             }
             Assert.True(evaluator.Evaluate(8.9999999999d, 10d) < 1d);
             evaluator = new NumericEvaluator<double>(0d, 10d, new NumericEvaluatorOptions<double>(
+                NumericCalculationParameter.Default,
                 new NumericCalculationParameter(0.1d)
             ));
             for (int i = 0, n = 10; i < n; i++)
