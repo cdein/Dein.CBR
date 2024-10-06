@@ -20,7 +20,7 @@ namespace Dein.CBRLib
             return Math.Pow(1d - stretchedDistance, 1d / linearity);
         }
 
-        public static Polynom Default = new Polynom();
+        public static readonly Polynom Default = new Polynom();
     }
 
     public class Root : IInterpolation
@@ -34,7 +34,7 @@ namespace Dein.CBRLib
             return Math.Pow(1d - stretchedDistance, linearity);
         }
 
-        public static Root Default = new Root();
+        public static readonly Root Default = new Root();
     }
 
     public class Sigmoid : IInterpolation
@@ -54,14 +54,14 @@ namespace Dein.CBRLib
             return Math.Pow(2d - 2d * stretchedDistance, 1d / linearity) / 2d;
         }
 
-        public static Sigmoid Default = new Sigmoid();
+        public static readonly Sigmoid Default = new Sigmoid();
     }
 
     public record NumericCalculationParameter(double Equality = 0d, double Tolerance = 0.5d, double Linearity = 1d, IInterpolation _Interpolation = null)
     {
         public IInterpolation Interpolation { get; } = _Interpolation == null ? Polynom.Default : _Interpolation;
 
-        public static NumericCalculationParameter Default = new NumericCalculationParameter();
+        public static readonly NumericCalculationParameter Default = new NumericCalculationParameter();
     }
 
     public record NumericEvaluatorOptions<T>(NumericCalculationParameter _IfLess = null, NumericCalculationParameter _IfMore = null, T _Origin = default, bool UseOrigin = false, bool Cyclic = false) where T : INumber<T>
