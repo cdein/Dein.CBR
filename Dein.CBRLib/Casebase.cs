@@ -6,7 +6,7 @@ namespace Dein.CBRLib
     public record Result<T>(double Similarity, T CaseObject) where T : class
     { }
 
-    public record ReasoningRequest<T>(T Query, int Offset = 0, int Limit = 0, double Threshold = 0.1d) where T : class
+    public record ReasoningRequest<T>(T Query, int Offset = 0, int Limit = 10, double Threshold = 0.1d) where T : class
     { }
 
     public record ReasoningResponse<T>(int TotalNumberOfHits, IEnumerable<Result<T>> Hits) where T : class

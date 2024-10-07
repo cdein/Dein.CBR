@@ -7,11 +7,14 @@ namespace Dein.CBRLib
     {
         PropertyInfo? Property { get; } = InstanceType.GetProperty(PropertyName, BindingFlags.Instance | BindingFlags.Public);
 
-        public T? GetValue(object instance)
+        public dynamic? GetValue(object instance)
         {
-            if (Property == null)
-                return default;
-            return (T?)Property.GetValue(instance);
+            if (Property == null || instance == null)
+                return null;
+            object? result = Property.GetValue(instance);
+            if (result == null)
+                return null;
+            return (T) result;
         }
     }
 
@@ -50,9 +53,11 @@ namespace Dein.CBRLib
 
     public class ObjectMedianEvaluator<T> : ObjectEvaluator<T> where T : class
     {
-        public override double Evaluate(T queryValue, T caseValue)
+        public override double Evaluate(T queryObject, T caseObject)
         {
-            List<double> similarities = CollectSimilarities(queryValue, caseValue);
+            if (queryObject == null || caseObject == null)
+              return 0d;
+            List<double> similarities = CollectSimilarities(queryObject, caseObject);
             if (similarities.Count == 0)
                 return 0d;
             else if (similarities.Count == 1)
@@ -67,18 +72,22 @@ namespace Dein.CBRLib
 
     public class ObjectMinEvaluator<T> : ObjectEvaluator<T> where T : class
     {
-        public override double Evaluate(T queryValue, T caseValue)
+        public override double Evaluate(T queryObject, T caseObject)
         {
-            List<double> similarities = CollectSimilarities(queryValue, caseValue);
+            if (queryObject == null || caseObject == null)
+              return 0d;
+            List<double> similarities = CollectSimilarities(queryObject, caseObject);
             return similarities.Min();
         }
     }
 
     public class ObjectMaxEvaluator<T> : ObjectEvaluator<T> where T : class
     {
-        public override double Evaluate(T queryValue, T caseValue)
+        public override double Evaluate(T queryObject, T caseObject)
         {
-            List<double> similarities = CollectSimilarities(queryValue, caseValue);
+            if (queryObject == null || caseObject == null)
+              return 0d;
+            List<double> similarities = CollectSimilarities(queryObject, caseObject);
             return similarities.Max();
         }
     }
@@ -87,6 +96,8 @@ namespace Dein.CBRLib
     {
         public override double Evaluate(T queryObject, T caseObject)
         {
+            if (queryObject == null || caseObject == null)
+              return 0d;
             double similarity_sum = 0;
             for (int i = 0, n = Evaluators.Count; i < n; i++)
             {
@@ -107,6 +118,8 @@ namespace Dein.CBRLib
     {
         public override double Evaluate(T queryObject, T caseObject)
         {
+            if (queryObject == null || caseObject == null)
+              return 0d;
             double divider = 0;
             double similarity_sum = 0;
             for (int i = 0, n = Evaluators.Count; i < n; i++)
