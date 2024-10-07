@@ -64,7 +64,7 @@ namespace Dein.CBRLib
         public static readonly NumericCalculationParameter Default = new NumericCalculationParameter();
     }
 
-    public record NumericEvaluatorOptions<T>(NumericCalculationParameter? _IfLess = null, NumericCalculationParameter? _IfMore = null, T? _Origin = default, bool UseOrigin = false, bool Cyclic = false) where T : INumber<T>
+    public record NumericEvaluatorOptions<T>(NumericCalculationParameter? _IfLess = null, NumericCalculationParameter? _IfMore = null, T? _Origin = default, bool UseOrigin = false, bool Cyclic = false) where T : struct
     {
         public NumericCalculationParameter IfLess { get; } = _IfLess == null ? NumericCalculationParameter.Default : _IfLess;
         public NumericCalculationParameter IfMore { get; } = _IfMore == null ? NumericCalculationParameter.Default : _IfMore;
@@ -72,7 +72,7 @@ namespace Dein.CBRLib
         public double Origin { get; } = Convert.ToDouble(_Origin == null ? 0 : _Origin);
     }
 
-    public class NumericEvaluator<T> : IEvaluator<T> where T : INumber<T>
+    public class NumericEvaluator<T> : IEvaluator<T> where T : struct
     {
         private double _maxPossibleDistance;
 
@@ -141,6 +141,28 @@ namespace Dein.CBRLib
 
             double rightDistance = 2 * maxDistance - leftDistance;
             return leftDistance < rightDistance;
+        }
+    }
+
+    public class TableLookup : IEvaluator<string>
+    {
+        private IDictionary<string, IDictionary<string, double>> _lookup;
+
+        public TableLookup(IDictionary<string, IDictionary<string, double>> lookup)
+        {
+            _lookup = lookup;
+        }
+
+        public double Evaluate(string queryValue, string caseValue)
+        {
+            if (queryValue == null || caseValue == null)
+                return 0d;
+            if (queryValue.Equals(caseValue))
+                return 1d;
+            if (!_lookup.TryGetValue(queryValue, out IDictionary<string, double>? similarityLookup)
+                || !similarityLookup.TryGetValue(caseValue, out double result))
+                return 0d;
+            return result;
         }
     }
 }

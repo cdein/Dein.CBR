@@ -27,6 +27,8 @@ namespace Dein.CBRLib.Tests
             Assert.Equal(0d, evaluatorOptions2.Origin);
             var evaluatorOptions3 = new NumericEvaluatorOptions<decimal>();
             Assert.Equal(0d, evaluatorOptions3.Origin);
+            var evaluatorOptions4 = new NumericEvaluatorOptions<DateTime>();
+            Assert.Equal(0d, evaluatorOptions4.Origin);
         }
 
         [Fact]
