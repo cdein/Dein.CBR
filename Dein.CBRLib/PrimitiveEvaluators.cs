@@ -57,14 +57,14 @@ namespace Dein.CBRLib
         public static readonly Sigmoid Default = new Sigmoid();
     }
 
-    public record NumericCalculationParameter(double Equality = 0d, double Tolerance = 0.5d, double Linearity = 1d, IInterpolation _Interpolation = null)
+    public record NumericCalculationParameter(double Equality = 0d, double Tolerance = 0.5d, double Linearity = 1d, IInterpolation? _Interpolation = null)
     {
         public IInterpolation Interpolation { get; } = _Interpolation == null ? Polynom.Default : _Interpolation;
 
         public static readonly NumericCalculationParameter Default = new NumericCalculationParameter();
     }
 
-    public record NumericEvaluatorOptions<T>(NumericCalculationParameter _IfLess = null, NumericCalculationParameter _IfMore = null, T _Origin = default, bool UseOrigin = false, bool Cyclic = false) where T : INumber<T>
+    public record NumericEvaluatorOptions<T>(NumericCalculationParameter? _IfLess = null, NumericCalculationParameter? _IfMore = null, T? _Origin = default, bool UseOrigin = false, bool Cyclic = false) where T : INumber<T>
     {
         public NumericCalculationParameter IfLess { get; } = _IfLess == null ? NumericCalculationParameter.Default : _IfLess;
         public NumericCalculationParameter IfMore { get; } = _IfMore == null ? NumericCalculationParameter.Default : _IfMore;
